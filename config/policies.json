@@ -1,0 +1,14 @@
+{
+  "noninteractive" : {
+  "keys" : [
+    "key*",
+	"validation*"
+  ]
+},
+  "interactive" : {
+    "keys" : [
+    "key*"
+    ]
+}
+}
+

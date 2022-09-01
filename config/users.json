@@ -1,0 +1,21 @@
+[
+  {
+    "user": "user1",
+    "properties": {
+      "password": "pass",
+      "policy": "noninteractive",
+      "ips": "ip_list1",
+      "create_keys" : true
+    }
+  },
+  {
+    "user": "user2",
+    "properties": {
+      "password": "password2",
+      "policy": "interactive",
+      "ips": "ip_list2",
+      "create_keys" : false
+    }
+  }
+]
+
