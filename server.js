@@ -105,7 +105,12 @@ class PiperServer extends events {
 			socket.pipe(decoder);
 			
 			// Load Whitelist, Check if IP is in Whitelist
-			let ip_list = this.users.ip_lists.find(x => x.list_name === "whitelist");
+            if (this.users.ip_lists){
+                var ip_list = this.users.ip_lists.find(x => x.list_name === "whitelist");
+            }
+            else{
+                this.emit('disconnection', pretty_socket_info(socket));
+            }
 			let ip_remote = socket.remoteAddress;
 			let whitelist = false;
 			if (ip_remote.substr(0, 7) === "::ffff:") {
