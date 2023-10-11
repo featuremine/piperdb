@@ -19,12 +19,12 @@ var log_file = args.logs;
 function current_date()
 {
 	const currentdate = new Date();
-	return currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/"
+	return currentdate.getDate().toString().padStart(2, '0') + "/"
+                + (currentdate.getMonth()+1).toString().padStart(2, '0')  + "/"
                 + currentdate.getFullYear() + " "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds()+" ";
+                + currentdate.getHours().toString().padStart(2, '0') + ":"
+                + currentdate.getMinutes().toString().padStart(2, '0') + ":"
+                + currentdate.getSeconds().toString().padStart(2, '0') + " ";
 
 }
 
@@ -238,9 +238,12 @@ class PiperServer extends events {
 
 		if (channel) {
 			if (!this.infos.has(channel)) {
-				this._clientError(socket, `no channel ${channel}`)
+				this._clientError(socket, `no channel ${channel}`);
+				return;
 			}
-			this._publish(socket, this.infos.get(channel), data[1]);
+			let info = this.infos.get(channel);
+ 			write_log_file(`${user} Published ${data[1]} on ${info.key}`);
+ 			this._publish(socket, info, data[1]);
 		} else {
 
 			// For command channel, expecting name of the command
