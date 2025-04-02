@@ -31,22 +31,22 @@ class PiperClient extends events {
 				promises: []
 			};
 			if(user && password){
-				this.connection.socket.write(pack.encode([user, password]));	
+				this.connection.socket.write(pack.encode([user, password]));
+				this.connection.promises.push({
+					resolve: (m) => {
+						console.log(`connected with the message: ${m}`);
+						this.subs.forEach((callbacks,key) => {callbacks.forEach((callback) => {this.subscribe(key,callback)});});
+						this.emit('connect');
+					},
+					reject: (e) => {
+						console.log(`failed to authenticate with error: ${e}`);
+						this.connection.socket.end();
+					}
+				});	
 			}
-			else{
+			else {
 				this.emit('connect');
 			}
-			this.connection.promises.push({
-				resolve: (m) => {
-					console.log(`connected with the message: ${m}`);
-					this.subs.forEach((callbacks,key) => {callbacks.forEach((callback) => {this.subscribe(key,callback)});});
-					this.emit('connect');
-				},
-				reject: (e) => {
-					console.log(`failed to authenticate with error: ${e}`);
-					this.connection.socket.end();
-				}
-			});
 		});
 		let decoder = pack.decoder();
 		decoder.on('data', (data)=>{this._read(data)});
